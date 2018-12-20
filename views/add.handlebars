@@ -1,0 +1,40 @@
+
+<section id="add" class="container">
+    <div class="form-wrap">
+      <h1>Add A User</h1>
+      <p>Your contact email will be shared with registered users to apply to your gig</p>
+      {{#each errors}}
+        <div class="error">
+          <p>{{text}}</p>
+        </div>
+      {{/each}}
+      <form action="/users/add" method="POST">
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" class="input-box" placeholder="user"
+            maxlength="100" value={{contact_email}}>
+        </div>
+        <div class="input-group">
+          <label for="gender">Gender</label>
+          <input type="text" name="gender" id="gender" class="input-box" placeholder="eg. javascript, react, PHP"
+          maxlength="100" value={{gender}}>
+        </div>
+        <div class="input-group">
+          <label for="age">Age</label>
+          <input type="number" name="age" id="age" class="input-box" placeholder="eg. 500, 5000, 10000" value={{age}}>
+        </div>
+        
+        <div class="input-group">
+          <label for="categories">Email</label>
+          <input type="text" name="categories" id="categories" class="input-box" placeholder="user"
+            maxlength="100" value={{categories}}>
+        </div>
+        <div class="input-group">
+          <label for="country">Gender</label>
+          <input type="text" name="country" id="country" class="input-box" placeholder="eg. javascript, react, PHP"
+          maxlength="100" value={{country}}>
+        </div>
+        <input type="submit" value="Add User" class="btn btn-reverse"> 
+         </form>
+    </div>
+  </section>

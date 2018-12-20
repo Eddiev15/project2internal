@@ -2,22 +2,25 @@ var express = require("express");
 var router = express.Router();
 var db = require('../config/connection');
 var model = require('../models/model.js');
+var sequelize = require('sequelize');
 var app = express();
+var bodyParser = require('body-parser');
 
-module.exports =  function(app) {
+// module.exports =  function(app) {
 
-    app.get('/', function(req, res) {
-        res.render('pages/index');
-    });
+//     app.get('/add', function(req, res) {
+//         res.render('pages/add');
+//     });
 
-};
+// };
 
 var user = require('../models/model.js');
-router.get('/', (req, res) => 
-user.findAll()
-    .then(user => {
-        console.log(user);
-        res.render('pages/index.handlebars');
+router.get('/users', (req, res) => 
+model.findAll()
+    .then(users => {
+        res.render('users',{
+        users
+        });  
     })
     .catch(err => console.log(err)));
 
@@ -29,7 +32,7 @@ user.findAll()
 // require("./routes/routermodule.js")(app);
 // )
 
-
+var user = require('../models/model.js');
 
 router.get("/api/usersOnly", function(req, res) {
 
@@ -39,7 +42,7 @@ router.get("/api/usersOnly", function(req, res) {
     });
 });
 
-router.get("/api/users", function(req, res) {
+router.get("api/users", function(req, res) {
 
     db.User.findAll({
         include: [
@@ -55,7 +58,7 @@ router.get("/api/users", function(req, res) {
     });
 });
 
-router.get("/api/categories", function(req, res) {
+router.get("api/categories", function(req, res) {
 
     db.Category.findAll({})
       .then(function(dbCategories) {
@@ -63,7 +66,7 @@ router.get("/api/categories", function(req, res) {
     });
 });
 
-router.get("/api/countries", function(req, res) {
+router.get("api/countries", function(req, res) {
 
     db.Country.findAll({})
       .then(function(dbCountries) {
@@ -71,42 +74,13 @@ router.get("/api/countries", function(req, res) {
     });
 });
 
-router.post("/api/addUser", function(req, res) {
-    let {email, categories, country} = req.body;
-    let errors = [];
 
 
-    if(!email) {
-        errors.push({ text: 'Please add a title' });
-    }
-    if(!categories) {
-        errors.push({ text: 'Please add a title' });
-    }        
-    if(!country) {
-        errors.push({ text: 'Please add a title' });        
-    }
+// router.get('/users/add', (req, res) => res.render('add'));
 
-    if(errors.length > 0) {
-        res.render('/');
-    } else {
-
-      user.create({
-        user,
-        categories,
-        country
-    })
-      .then(user => res.redirect('/'))
-      .catch(err => console.log(err)); 
-    
-    } 
-    });  
-    
-
-
-    router.get('/add', (req, res) => res.render('add'));
-
-    //has to be modified depending on front end form.
-    // var user = req.body.user;
+ 
+    // has to be modified depending on front end form.
+    // var user = req.body.email;
     // var category = req.body.category;
     // var country = req.body.country;
     // var categoryRanking = req.body.ranking;
@@ -122,49 +96,81 @@ router.post("/api/addUser", function(req, res) {
     // var categoryRanking = 4;
     // var country = 'United States';
 
-//     db.User.create(user).then(function (dbUser) {
+    //Display add user form
 
-//         dbUsers.push(dbUser.id);
+    app.post('/add', (req, res) => {
+        let { email, gender, age, categories, country } = req.body;
+        let errors = [];
+      
+        if(!email) {
+            errors.push({ text: 'Please add a title' });
+        }
+        if(!gender) {
+            errors.push({ text: 'Please add a title' });
+        }        
+        if(!age) {
+            errors.push({ text: 'Please add a title' });        
+        }
+   
+        if(errors.length > 0) {
+            res.render('/');
+        } else {
+   
+        //   model.user.create({
+        //     email,
+        //     gender,
+        //     age
+        db.User.create(user).then(function (dbUser) {
 
-//     }).catch (function(error) {
-    
-//         if (error.toString().indexOf("SequelizeUniqueConstraintError") != -1){
-//             res.json('The email has already been used. Please try another one');
-//         }
+            dbUsers.push(dbUser.id);
+   
+        }).catch (function(error) {
+       
+            if (error.toString().indexOf("SequelizeUniqueConstraintError") != -1){
+                res.json('The email has already been used. Please try another one');
+            }
+   
+            else {
+                res.json('There was an error adding the user: ' + error);
+            }
+        }).then(function(){
+   
+            db.Category.findOne({ 
+                where: {category_name: category} 
+            }).then(function(category){
+   
+                db.UserCategory.create({
+   
+                    category_ranking: categoryRanking,
+                    UserId: dbUsers[0],
+                    CategoryId: category.id
+   
+                })
+            })
+        }).then(function() {
+   
+            db.Country.findOne({
+                where: {country_name: country}
+            }).then(function(country){
+   
+                db.UserCountry.create({
+   
+                    UserId: dbUsers[0],
+                    CountryId: country.id
+                });
+            }).then(function(result){
+                res.json("User added succesfully with id " + dbUsers[0]);
+            });
+        })
 
-//         else {
-//             res.json('There was an error adding the user: ' + error);
-//         }
-//     }).then(function(){
+          .then(user => res.redirect('/users'))
+          .catch(err => console.log(err)); 
+       
+        } 
+        });  
 
-//         db.Category.findOne({ 
-//             where: {category_name: category} 
-//         }).then(function(category){
 
-//             db.UserCategory.create({
-
-//                 category_ranking: categoryRanking,
-//                 UserId: dbUsers[0],
-//                 CategoryId: category.id
-
-//             })
-//         })
-//     }).then(function() {
-
-//         db.Country.findOne({
-//             where: {country_name: country}
-//         }).then(function(country){
-
-//             db.UserCountry.create({
-
-//                 UserId: dbUsers[0],
-//                 CountryId: country.id
-//             });
-//         }).then(function(result){
-//             res.json("User added succesfully with id " + dbUsers[0]);
-//         });
-//     });;
-// });
+ 
 
 router.get("/api/user/:id", function(req, res) {
 
