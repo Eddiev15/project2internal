@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+</head>
+<body>
+
+
+    <div id="tfheader">
+        <form id="tfnewsearch" method="get" action="search">
+            <input type="text" class="tftextinput" id="tftextinput" name="q" size="21" maxlength="120"><input type="submit" value="search" class="tfbutton">
+        </form>
+    <div class="tfclear"></div>
+    </div>
+
+ 
+<button id = "downvote">Down Vote</button>
+<button id = "reset">Reset</button>
+
+<div id = "newsfeed"></div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script type='text/javascript'>
+
+
+$('#tftextinput').on('click', function(){
+a.addEventListener('submit', function(e) {   
+var a = document.getElementById('tfnewsearch');
+var b = document.getElementById('tftextinput').value;  
+console.log(b); 
+function submit();
+})
+  }) 
+
+
+    //   var x = $(this).data("search");
+    var a = document.getElementById('tfnewsearch');
+        a.addEventListener('submit',function (e) {
+        e.preventDefault();
+        $('#tftextinput').on('click', function(){
+        function submit(){    
+        console.log(b);
+        console.log("clicked submit");
+        var queryURL = " https://newsapi.org/v2/everything?q="+b+"&apiKey=c774e4cd5e214a22b0ed485d8fd28386";
+        console.log(queryURL);   
+           }
+  
+        $.ajax({url:queryURL, method: 'GET'})
+            .done(function(response){
+                 console.log(response);
+                //  var i = Math.floor(Math.random() * 21);
+                //  console.log(i);  
+                //  for(var i; i<5; i++){
+                 $('#newsfeed').append("<h3> "+response.articles[1].title+"</>");
+                 $('#newsfeed').append("<p>Article: "+response.articles[1].description+"</p>");
+                 $('#newsfeed').append("<img src='"+response.articles[1].urlToImage+"'>");
+              
+                 })
+                })
+            })        
+        
+
+        // var queryURL = "https://rest.bandsintown.com/artists/"+b+"/events?app_id=1629ec16a6eb32280cb56544c3b93ea4";
+        // console.log(queryURL);    
+  
+        // $.ajax({url:queryURL, method: 'GET'})
+        //     .done(function(response){
+        //         var i = Math.floor(Math.random() * 10);
+        //          console.log(i); 
+        //         //  for(var i; i<5; i++){
+        //          console.log(response);
+        //          $('#newsfeed').append("<p>Description: "+response[i].description+"</p>");
+        //     })
+        // // })
+
+                var queryURL = "https://newsapi.org/v2/top-headlines?country=us&apiKey=c774e4cd5e214a22b0ed485d8fd28386";
+        console.log(queryURL);    
+  
+        $.ajax({url:queryURL, method: 'GET'})
+            .done(function(response){
+                 console.log(response);
+                    // var i = Math.floor(Math.random() * 21);
+                    // console.log(i);  
+                //  for(var i; i<5; i++){
+                 $('#newsfeed').append("<h3> "+response.articles[1].title+"</>");
+                 $('#newsfeed').append("<p>Article: "+response.articles[1].description+"</p>");
+                 $('#newsfeed').append("<img src='"+response.articles[1].urlToImage+"'>");
+              
+                 })
+        
+        
+          var queryURL = " https://newsapi.org/v2/everything?q=nba&apiKey=c774e4cd5e214a22b0ed485d8fd28386";
+        console.log(queryURL);    
+  
+        $.ajax({url:queryURL, method: 'GET'})
+            .done(function(response){
+                 console.log(response);
+                //  var i = Math.floor(Math.random() * 21);
+                //  console.log(i);  
+                //  for(var i; i<5; i++){
+                 $('#newsfeed').append("<h3> "+response.articles[1].title+"</>");
+                 $('#newsfeed').append("<p>Article: "+response.articles[1].description+"</p>");
+                 $('#newsfeed').append("<img src='"+response.articles[1].urlToImage+"'>");
+              
+            
+           })
+            
+        })
+    })
+
+
+
+  $('#downvote').on('click', function(){
+    //   var x = $(this).data("search");
+      console.log("clicked down vote");
+    //   if (x === "Down Vote") {
+  
+ 
+
+        var queryURL = "https://newsapi.org/v2/top-headlines?country=us&apiKey=c774e4cd5e214a22b0ed485d8fd28386";
+        console.log(queryURL);    
+  
+        $.ajax({url:queryURL, method: 'GET'})
+            .done(function(response){
+                 console.log(response);
+                 var i = Math.floor(Math.random() * 21);
+                 console.log(i);  
+                //  for(var i; i<5; i++){
+                 $('#newsfeed').prepend("<h3> "+response.articles[i].title+"</>");
+                 $('#newsfeed').prepend("<p>Article: "+response.articles[i].description+"</p>");
+                 $('#newsfeed').prepend("<img src='"+response.articles[i].urlToImage+"'>");
+              
+                 })
+    
+        
+        
+          var queryURL = " https://newsapi.org/v2/everything?q="+b+"&apiKey=c774e4cd5e214a22b0ed485d8fd28386";
+        console.log(queryURL);    
+  
+        $.ajax({url:queryURL, method: 'GET'})
+            .done(function(response){
+                 console.log(response);
+                 var i = Math.floor(Math.random() * 21);
+                 console.log(i);  
+                 for(var i; i<5; i++){
+                 $('#newsfeed').prepend("<h3> "+response.articles[i].title+"</>");
+                 $('#newsfeed').prepend("<p>Article: "+response.articles[i].description+"</p>");
+                 $('#newsfeed').prepend("<img src='"+response.articles[i].urlToImage+"'>");
+              
+            
+           }
+            })
+        })
+        
+     
+    
+
+    $('#reset').on('click', function(){
+    // //   var x = $(this).data("search");
+    // //   console.log("clicked" + " " + x);
+    // //   if (x === "Reset") {
+    // //   function reset(){
+        console.log("clicked reset");
+        $("#newsfeed").empty("");
+        
+      })
+//     }
+// })
+
+
+  </script>
+
+
+</body>
+</html>

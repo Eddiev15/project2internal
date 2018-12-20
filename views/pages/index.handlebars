@@ -1,0 +1,25 @@
+<section id="search" class="search-wrap">
+  <h1>Find A Coding Gig</h1>
+  <form action="/gigs/search" class="search-form">
+    <i class="fas fa-search"></i>
+    <input type="search" name="term" placeholder="Javascript, PHP, Rails, etc...">
+    <input type="submit" value="Search">
+  </form>
+</section>
+
+<button id = "categories">categories</button>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script type='text/javascript'>
+
+
+
+  $('#categories').click(function() {
+    console.log("clicked categories");
+    window.location.href = 'partial/articles.handlebars';
+    return false;
+});
+
+    </script>
+
+   
