@@ -72,13 +72,45 @@ router.get("/api/countries", function(req, res) {
 });
 
 router.post("/api/addUser", function(req, res) {
+    let {email, categories, country} = req.body;
+    let errors = [];
+
+
+    if(!email) {
+        errors.push({ text: 'Please add a title' });
+    }
+    if(!categories) {
+        errors.push({ text: 'Please add a title' });
+    }        
+    if(!country) {
+        errors.push({ text: 'Please add a title' });        
+    }
+
+    if(errors.length > 0) {
+        res.render('/');
+    } else {
+
+      user.create({
+        user,
+        categories,
+        country
+    })
+      .then(user => res.redirect('/'))
+      .catch(err => console.log(err)); 
+    
+    } 
+    });  
+    
+
+
+    router.get('/add', (req, res) => res.render('add'));
 
     //has to be modified depending on front end form.
-    var user = req.body.user;
-    var category = req.body.category;
-    var country = req.body.country;
-    var categoryRanking = req.body.ranking;
-    var dbUsers = [];
+    // var user = req.body.user;
+    // var category = req.body.category;
+    // var country = req.body.country;
+    // var categoryRanking = req.body.ranking;
+    // var dbUsers = [];
 
     //for testing purposes only
     // var user = {
@@ -90,49 +122,49 @@ router.post("/api/addUser", function(req, res) {
     // var categoryRanking = 4;
     // var country = 'United States';
 
-    db.User.create(user).then(function (dbUser) {
+//     db.User.create(user).then(function (dbUser) {
 
-        dbUsers.push(dbUser.id);
+//         dbUsers.push(dbUser.id);
 
-    }).catch (function(error) {
+//     }).catch (function(error) {
     
-        if (error.toString().indexOf("SequelizeUniqueConstraintError") != -1){
-            res.json('The email has already been used. Please try another one');
-        }
+//         if (error.toString().indexOf("SequelizeUniqueConstraintError") != -1){
+//             res.json('The email has already been used. Please try another one');
+//         }
 
-        else {
-            res.json('There was an error adding the user: ' + error);
-        }
-    }).then(function(){
+//         else {
+//             res.json('There was an error adding the user: ' + error);
+//         }
+//     }).then(function(){
 
-        db.Category.findOne({ 
-            where: {category_name: category} 
-        }).then(function(category){
+//         db.Category.findOne({ 
+//             where: {category_name: category} 
+//         }).then(function(category){
 
-            db.UserCategory.create({
+//             db.UserCategory.create({
 
-                category_ranking: categoryRanking,
-                UserId: dbUsers[0],
-                CategoryId: category.id
+//                 category_ranking: categoryRanking,
+//                 UserId: dbUsers[0],
+//                 CategoryId: category.id
 
-            })
-        })
-    }).then(function() {
+//             })
+//         })
+//     }).then(function() {
 
-        db.Country.findOne({
-            where: {country_name: country}
-        }).then(function(country){
+//         db.Country.findOne({
+//             where: {country_name: country}
+//         }).then(function(country){
 
-            db.UserCountry.create({
+//             db.UserCountry.create({
 
-                UserId: dbUsers[0],
-                CountryId: country.id
-            });
-        }).then(function(result){
-            res.json("User added succesfully with id " + dbUsers[0]);
-        });
-    });;
-});
+//                 UserId: dbUsers[0],
+//                 CountryId: country.id
+//             });
+//         }).then(function(result){
+//             res.json("User added succesfully with id " + dbUsers[0]);
+//         });
+//     });;
+// });
 
 router.get("/api/user/:id", function(req, res) {
 

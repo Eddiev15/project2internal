@@ -9,6 +9,45 @@
 
 <button id = "categories">categories</button>
 
+<section id="add" class="container">
+    <div class="form-wrap">
+      <h1>Add A User</h1>
+      <p>Your contact email will be shared with registered users to apply to your gig</p>
+      {{#each errors}}
+        <div class="error">
+          <p>{{text}}</p>
+        </div>
+      {{/each}}
+      <form action="/api/addUser" method="POST">
+        <div class="input-group">
+          <label for="user">Email</label>
+          <input type="text" name="user" id="user" class="input-box" placeholder="user"
+            maxlength="100" value={{contact_email}}>
+        </div>
+        <div class="input-group">
+          <label for="categories">Categories</label>
+          <input type="text" name="categories" id="categories" class="input-box" placeholder="eg. javascript, react, PHP"
+          maxlength="100" value={{categories}}>
+        </div>
+        <div class="input-group">
+          <label for="country">Country</label>
+          <input type="text" name="country" id="country" class="input-box" placeholder="eg. 500, 5000, 10000" value={{country}}>
+        </div>
+        {{!-- <div class="input-group">
+          <label for="description">Gig Description</label>
+          <textarea name="description" id="description" class="input-box" placeholder="Describe the details of the gig"
+            rows="10">{{description}}</textarea>
+        </div>
+        <div class="input-group">
+          <label for="budget">Contact Email</label>
+          <input type="email" name="contact_email" id="contactemail" class="input-box" placeholder="Enter an email" value={{contact_email}}>
+        </div>
+        <input type="submit" value="Add Gig" class="btn btn-reverse"> --}}
+        <input type="submit" value="Add Gig" class="btn btn-reverse"> 
+      </form>
+    </div>
+  </section>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script type='text/javascript'>
 
@@ -19,6 +58,8 @@
     window.location.href = 'partial/articles.handlebars';
     return false;
 });
+
+{{{body}}}
 
     </script>
 
